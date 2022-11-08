@@ -1,0 +1,46 @@
+# 项目fisheyeStitcher-master环境配置说明
+
+1. 安装ffmpeg，推荐版本4.3.1
+    1. 进入ffmpeg源代码目录，进行配置，执行
+    '''
+    ./configure --prefix=/指定/安装/目录/ --pkg-config-flags=--static --extra-cflags='-fPIC' --extra-libs='-lpthread -lm' --ld=g++ --bindir=/home/cgzhang/install/bin --enable-gpl --enable-gnutls --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-nonfree
+    '''
+    Tips: 若系统无自带H264，需另行安装
+    2. 编译安装
+    '''
+    mkdir build && cd build
+    make -j4 && make install
+    '''
+
+2. 安装opencv，推荐版本3.4.16
+    1. 与已安装的ffmpeg链接，执行
+    '''
+    export PKG_CONFIG_PATH=/ffmpeg/安装/目录/lib/pkgconfig
+    '''
+    2. cmake配置，进入源代码目录
+    '''
+    mkdir build && cd build
+    cmake -DCMAKE_INSTALL_PREFIX=/指定/安装/目录/ -DBUILD_DOCS=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_EXAMPLES=OFF -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-Bsymbolic .. 
+    '''
+    3. 编译安装
+    '''
+    make -j4 && make install
+    '''
+    4. 编辑系统环境变量
+    '''
+    vim ~/.bashrc
+    '''
+    末尾添加
+    '''
+    export OpenCV_DIR=/opencv/安装/目录/share/OpenCV/
+    '''
+    立即生效，重新登陆或者执行
+    '''
+    source ~/.bashrc
+    '''
+
+3. 运行项目fisheyeStitcher，参考其README.md
+
+**注意：**
+    + **建议安装某工具，编译其源码时，安装路径统一设为某路径，如 /home/liangma4/Software/Install/ ，可以避免许多找不到库文件的bug。**
+    + **同时可在 .bashrc 文件中添加 export LD_LIBRARY_PATH=/home/liangma4/Software/Install/lib/ **
